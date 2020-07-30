@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        webView?.loadUrl("http://10.10.10.108:3000")
+        webView?.loadUrl("http://XXX.XXX.XXX.XXX:3000")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
