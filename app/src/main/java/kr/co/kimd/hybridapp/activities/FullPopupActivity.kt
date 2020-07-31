@@ -44,28 +44,14 @@ class FullPopupActivity: AppCompatActivity() {
                     Log.i(TAG, "==== call PageFinished !!!!" + result)
                     val url = result as String
                     if (!url.equals(loadUrl) && url.contains(hookingUrl)) {
-                        val arr = url.split("?", "&")
-                        for (elem in arr) {
-                            Log.i(TAG, "==== elem - " + elem)
-                            if (!elem.equals(hookingUrl) && elem.contains("code")) {
-                                closeFullPopup(elem.split("=")[1])
-                                break
-                            }
-                        }
+                        getOAuthCode(url, hookingUrl)
                     }
                 }
                 WebViewAction.ShouldOverrideUrlLoading -> {
                     Log.i(TAG, "==== call ShouldOverrideUrlLoading !!! - " + result)
                     val url = result as String
                     if (url.contains(hookingUrl)) {
-                        val arr = url.split("?", "&")
-                        for (elem in arr) {
-                            Log.i(TAG, "==== elem - " + elem)
-                            if (!elem.equals(hookingUrl) && elem.contains("code")) {
-                                closeFullPopup(elem.split("=")[1])
-                                break
-                            }
-                        }
+                        getOAuthCode(url, hookingUrl)
                     }
                 }
                 else -> {
@@ -75,6 +61,17 @@ class FullPopupActivity: AppCompatActivity() {
         }
 
         webView?.loadUrl(loadUrl)
+    }
+
+    fun getOAuthCode(url: String, hookingUrl: String) {
+        val arr = url.split("?", "&")
+        for (elem in arr) {
+            Log.i(TAG, "==== elem - " + elem)
+            if (!elem.equals(hookingUrl) && elem.contains("code")) {
+                closeFullPopup(elem.split("=")[1])
+                break
+            }
+        }
     }
 
     fun closeFullPopup(code: String) {
