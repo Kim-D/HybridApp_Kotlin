@@ -1,10 +1,11 @@
 package kr.co.kimd.hybridapp.webview
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Message
 import android.util.AttributeSet
 import android.util.Log
@@ -56,6 +57,22 @@ class CustomWebView : WebView, AndroidBridgeInterface {
         settings.loadWithOverviewMode = true
         settings.useWideViewPort = true
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            if (0 != (mContext?.applicationInfo!!.flags.and(ApplicationInfo.FLAG_DEBUGGABLE))) {
+                setWebContentsDebuggingEnabled(true)
+            }
+        }
+
+        settings.textZoom = 100
+        settings.setAppCacheEnabled(true)
+        settings.cacheMode = WebSettings.LOAD_NO_CACHE
+
+        settings.domStorageEnabled = true
+        //settings.setGeolocationEnabled(true)
 
         this.webViewClient = CustomWebViewClient()
         this.webChromeClient = CustomWebChormeClient()
